@@ -44,7 +44,7 @@ public class Main {
             Livro l1 = new Livro("Harry Potter");
             Livro l2 = new Livro("Percy Jackson");
             Livro l3 = new Livro("O Pequeno Principe");
-            Livro l4 = new Livro("Alienista");
+            Livro l4 = new Livro("O Alienista");
 
             //colocando os livros em uma biblioteca
             bibliotecaHasLivroDAO.insertBibliotecaHasLivro(b1, l1);
