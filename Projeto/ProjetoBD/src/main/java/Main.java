@@ -24,33 +24,33 @@ public class Main {
         Dono d2 = new Dono("Ana Clara","12345678910");
 
         //criando duas bibliotecas
-        Biblioteca b1;
-        Biblioteca b2;
+        Biblioteca b1 = null;
+        Biblioteca b2 = null;
 
         //vendo numero de bibliotecas, como nao pode inserir, sempre tera duas
         //se nao tiver eh porque deu drop no database
         //ai ira cria-las
         if(t == 0) {
 
-            //colocando o dono no banco de dados
+            //inserindo os donos
             donoDAO.insertDono(d1);
             donoDAO.insertDono(d2);
 
-            //criando as duas bibliotecas, com nome, cidade e qual dono eh de cada
-            b1 = new Biblioteca("Livros&CIA", "Paraisopolis", d1);
-            b2 = new Biblioteca("CIA&Livros", "Ouros", d1);
-
-            //criando 4 livros
-            Livro l1 = new Livro("Harry Potter");
-            Livro l2 = new Livro("Percy Jackson");
-            Livro l3 = new Livro("O Pequeno Principe");
-            Livro l4 = new Livro("O Alienista");
-
-            //colocando os livros em uma biblioteca
-            bibliotecaHasLivroDAO.insertBibliotecaHasLivro(b1, l1);
-            bibliotecaHasLivroDAO.insertBibliotecaHasLivro(b1, l2);
-            bibliotecaHasLivroDAO.insertBibliotecaHasLivro(b2, l3);
-            bibliotecaHasLivroDAO.insertBibliotecaHasLivro(b2, l4);
+            //vendo se os donos tem alguma biblioteca
+            if (!bibliotecaDAO.donoTemBiblioteca(d1.getCPF())) {
+                b1 = new Biblioteca("Livros&CIA", "Paraisopolis", d1);
+                Livro l1 = new Livro("Harry Potter");
+                Livro l2 = new Livro("Percy Jackson");
+                bibliotecaHasLivroDAO.insertBibliotecaHasLivro(b1, l1);
+                bibliotecaHasLivroDAO.insertBibliotecaHasLivro(b1, l2);
+            }
+            if (!bibliotecaDAO.donoTemBiblioteca(d1.getCPF())) {
+                b2 = new Biblioteca("CIA&Livros", "Ouros", d1);
+                Livro l3 = new Livro("O Pequeno Principe");
+                Livro l4 = new Livro("O Alienista");
+                bibliotecaHasLivroDAO.insertBibliotecaHasLivro(b2, l3);
+                bibliotecaHasLivroDAO.insertBibliotecaHasLivro(b2, l4);
+            }
         }
         //se as bibliotecas ja estiverem sido criadas
         else{
@@ -136,9 +136,17 @@ public class Main {
                     String qb = sc.nextLine();
                     //adicionando o livro a biblioteca
                     if(qb.equals("b1")) {
-                        bibliotecaHasLivroDAO.insertBibliotecaHasLivro(b1, livro);
+                        try {
+                            bibliotecaHasLivroDAO.insertBibliotecaHasLivro(b1, livro);
+                        } catch (Exception e){
+                            System.out.println("Erro!!!!!!");
+                        }
                     } else if (qb.equals("b2")){
-                        bibliotecaHasLivroDAO.insertBibliotecaHasLivro(b2, livro);
+                        try {
+                            bibliotecaHasLivroDAO.insertBibliotecaHasLivro(b2, livro);
+                        } catch (Exception e){
+                            System.out.println("Erro!!!!!");
+                        }
                     } else{
                         System.out.println("Numero invalido");
                     }
@@ -154,14 +162,22 @@ public class Main {
                         System.out.println("Qual o numero do livro deseja pegar?");
                         escolheLivro = sc.nextInt();
                         //alugando o livro
-                        livroDAO.aluga(cliente.getMatricula(),escolheLivro);
+                        try {
+                            livroDAO.aluga(cliente.getMatricula(), escolheLivro);
+                        } catch (Exception e){
+                            System.out.println("Erro!!!!!");
+                        }
                     } else if (numbiblioteca.equals("b2")) {
                         //mostrando os livros da biblioteca 2
                         bibliotecaDAO.selecionada(2);
                         System.out.println("Qual o numero do livro deseja pegar?");
                         escolheLivro = sc.nextInt();
                         //alugando o livro
-                        livroDAO.aluga(cliente.getMatricula(),escolheLivro);
+                        try {
+                            livroDAO.aluga(cliente.getMatricula(), escolheLivro);
+                        } catch (Exception e){
+                            System.out.println("Erro!!!!!!");
+                        }
                     }else{
                         System.out.println("Invalido");
                     }

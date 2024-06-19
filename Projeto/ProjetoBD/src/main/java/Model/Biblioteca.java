@@ -3,19 +3,19 @@ package Model;
 import DAO.BibliotecaDAO;
 
 public class Biblioteca {
-    private String nome;
-    private String cidade;
-    static Integer num = 0;
-    private Integer idBiblioteca = 0;
+    private final String nome;
+    private final String cidade;
+    Integer idBiblioteca;
     private Dono dono;
     BibliotecaDAO bibliotecaDAO = new BibliotecaDAO();
+    private Integer numero = bibliotecaDAO.quantidadeBibliotecas();
 
     //construtores de biblioteca
     public Biblioteca(String nome, String cidade, Dono dono) {
         this.nome = nome;
         this.cidade = cidade;
-        num++;
-        this.idBiblioteca = num;
+        this.numero++;
+        this.idBiblioteca = this.numero;
         this.dono = dono;
         bibliotecaDAO.insertBiblioteca(nome, cidade, idBiblioteca, dono);
     }
@@ -37,9 +37,5 @@ public class Biblioteca {
 
     public Integer getIdBiblioteca() {
         return idBiblioteca;
-    }
-
-    public static Integer getNum() {
-        return num;
     }
 }

@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BibliotecaDAO extends ConnectionDAO{
+public class BibliotecaDAO extends ConnectionDAO {
 
 
     //DAO - Data Access Object
@@ -24,7 +24,7 @@ public class BibliotecaDAO extends ConnectionDAO{
         String sql = "INSERT INTO Biblioteca (Nome, Cidade, Dono_CPF, idBiblioteca) values(?,?,?,?)";
         try {
             pst = con.prepareStatement(sql);
-            pst.setString(1,nome);
+            pst.setString(1, nome);
             pst.setString(2, cidade);
             pst.setString(3, dono.getCPF());
             pst.setInt(4, idbiblioteca);
@@ -220,8 +220,9 @@ public class BibliotecaDAO extends ConnectionDAO{
         connectToDB();
         String sql = "SELECT COUNT(DISTINCT idBiblioteca) AS total FROM Biblioteca WHERE idBiblioteca <> 0";
 
-        try (PreparedStatement st = con.prepareStatement(sql);
-             ResultSet rs = st.executeQuery()){
+        try {
+            st = con.createStatement();
+            rs = st.executeQuery(sql);
 
             if (rs.next()) {
                 count = rs.getInt("total");
@@ -233,9 +234,8 @@ public class BibliotecaDAO extends ConnectionDAO{
             sucesso = false;
         } finally {
             try {
-                if (con != null) {
-                    con.close();
-                }
+                con.close();
+                st.close();
             } catch (SQLException e) {
                 System.out.println("Erro: " + e.getMessage());
             }
@@ -271,5 +271,31 @@ public class BibliotecaDAO extends ConnectionDAO{
             }
         }
         return biblioteca;
+    }
+
+    //ver se o dono tem biblioteca
+    public boolean donoTemBiblioteca(String cpfDono) {
+        boolean temBiblioteca = false;
+        connectToDB();
+        String sql = "SELECT COUNT(*) AS total FROM Biblioteca WHERE Dono_CPF = ?";
+
+        try (PreparedStatement pst = con.prepareStatement(sql)) {
+            pst.setString(1, cpfDono);
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next() && rs.getInt("total") > 0) {
+                    temBiblioteca = true;
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro: " + e.getMessage());
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("Erro: " + e.getMessage());
+            }
+        }
+
+        return temBiblioteca;
     }
 }
