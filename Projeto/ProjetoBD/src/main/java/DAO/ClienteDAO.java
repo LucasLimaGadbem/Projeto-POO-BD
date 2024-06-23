@@ -169,7 +169,7 @@ public class ClienteDAO extends ConnectionDAO{
 
         int count = 0;
         connectToDB();
-        String sql = "SELECT COUNT(DISTINCT Matricula) AS total FROM Cliente WHERE Matricula <> 0";
+        String sql = "SELECT MAX(Matricula) AS total FROM Cliente";
 
         try {
             st = con.createStatement();

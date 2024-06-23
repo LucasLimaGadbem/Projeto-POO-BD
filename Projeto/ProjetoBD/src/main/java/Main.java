@@ -44,7 +44,7 @@ public class Main {
                 bibliotecaHasLivroDAO.insertBibliotecaHasLivro(b1, l1);
                 bibliotecaHasLivroDAO.insertBibliotecaHasLivro(b1, l2);
             }
-            if (!bibliotecaDAO.donoTemBiblioteca(d1.getCPF())) {
+            if (!bibliotecaDAO.donoTemBiblioteca(d2.getCPF())) {
                 b2 = new Biblioteca("CIA&Livros", "Ouros", d1);
                 Livro l3 = new Livro("O Pequeno Principe");
                 Livro l4 = new Livro("O Alienista");
